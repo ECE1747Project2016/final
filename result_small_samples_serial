@@ -1,0 +1,44 @@
+78.5943889618 running time
+158.560698032 running time
+317.541028023 running time
+636.380517006 running time
+number of files:  64 which loop:  0 running time:  79.0713739395
+number of files:  64 which loop:  1 running time:  79.1772179604
+number of files:  64 which loop:  2 running time:  79.1840829849
+number of files:  64 which loop:  3 running time:  80.9300830364
+number of files:  64 which loop:  4 running time:  79.2588150501
+number of files:  64 which loop:  5 running time:  79.369715929
+number of files:  64 which loop:  6 running time:  79.44840312
+number of files:  64 which loop:  7 running time:  80.8576610088
+number of files:  64 which loop:  8 running time:  78.6769030094
+number of files:  64 which loop:  9 running time:  78.7716670036
+number of files:  128 which loop:  0 running time:  159.555618048
+number of files:  128 which loop:  1 running time:  159.934764147
+number of files:  128 which loop:  2 running time:  159.399996996
+number of files:  128 which loop:  3 running time:  159.812011003
+number of files:  128 which loop:  4 running time:  159.584169149
+number of files:  128 which loop:  5 running time:  159.881100178
+number of files:  128 which loop:  6 running time:  159.677062988
+number of files:  128 which loop:  7 running time:  159.7264359
+number of files:  128 which loop:  8 running time:  159.571583033
+number of files:  128 which loop:  9 running time:  159.930079937
+number of files:  256 which loop:  0 running time:  319.47852087
+number of files:  256 which loop:  1 running time:  320.929581881
+number of files:  256 which loop:  2 running time:  319.95262599
+number of files:  256 which loop:  3 running time:  319.127360106
+number of files:  256 which loop:  4 running time:  320.32296586
+number of files:  256 which loop:  5 running time:  320.212704897
+number of files:  256 which loop:  6 running time:  321.074098825
+number of files:  256 which loop:  7 running time:  320.273181915
+number of files:  256 which loop:  8 running time:  316.83048892
+number of files:  256 which loop:  9 running time:  317.751690865
+number of files:  512 which loop:  0 running time:  635.086299896
+number of files:  512 which loop:  1 running time:  634.476663113
+number of files:  512 which loop:  2 running time:  635.131384134
+number of files:  512 which loop:  3 running time:  636.927511215
+number of files:  512 which loop:  4 running time:  634.42365098
+number of files:  512 which loop:  5 running time:  635.317305088
+number of files:  512 which loop:  6 running time:  634.710210085
+number of files:  512 which loop:  7 running time:  635.150784969
+number of files:  512 which loop:  8 running time:  631.778075933
+number of files:  512 which loop:  9 running time:  633.166634083
