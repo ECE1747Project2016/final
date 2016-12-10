@@ -3,6 +3,8 @@ from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.datasets import SupervisedDataSet,UnsupervisedDataSet
 from pybrain.structure import LinearLayer
 
+from functools import partial
+
 import math
 import multiprocessing
 import numpy
@@ -12,7 +14,7 @@ import time
 window = 200
 filename = "./data/signal3/signal"
 
-def partialTraining(index, length, result_queue):
+def partialTraining(length, result_queue, index):
 	actualLength = 0
 	t_set = []
 	for i in range (index, index+length):
@@ -40,9 +42,9 @@ def partialTraining(index, length, result_queue):
 
 if __name__ == "__main__":
 	for samples in (100, 200, 400, 800, 1600):
-		#samples = 1000
+			#samples = 1000
 		for num_cores in (2, 4, 8, 16, 32):
-			#num_cores = 16
+			#num_cores = 4
 			
 			result_list = []
 			time_list = []
@@ -56,8 +58,10 @@ if __name__ == "__main__":
 				tSet_length = int(math.ceil(samples / num_cores))
 				curr_index = 0
 
-				results = multiprocessing.Queue()
-
+				m = multiprocessing.Manager()
+				#results = multiprocessing.Queue()
+				results = m.Queue()
+				'''
 				for i in range(num_cores):
 				    p = multiprocessing.Process(target=partialTraining, args=(curr_index, tSet_length, results))
 				    jobs.append(p)
@@ -68,6 +72,18 @@ if __name__ == "__main__":
 
 				for proc in jobs:
 				    proc.join()
+				'''
+				
+				indexes = []
+				for i in range(num_cores):
+					indexes.append(curr_index)
+					curr_index += tSet_length
+
+				func = partial(partialTraining, tSet_length, results)
+				pool = multiprocessing.Pool(processes=num_cores)
+				pool.map(func, indexes)
+				pool.close()
+				pool.join()
 
 
 				finalTrainingSet = []
@@ -88,6 +104,8 @@ if __name__ == "__main__":
 				ts.addSample(finalTrainingSet[size-1])
 
 				finalResult = net.activateOnDataset(ts)
+
+
 
 				t1 = time.time()
 
@@ -110,9 +128,6 @@ if __name__ == "__main__":
 			arr_std = numpy.std(arr, axis=0)
 			for elem in arr_std:
 				print elem
-
-
-
 
 '''
 ds = SupervisedDataSet(window, window)

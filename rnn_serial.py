@@ -39,9 +39,15 @@ def partialTraining(index, length, result_queue):
 
 
 if __name__ == "__main__":
-	#for size in (64, 128, 256, 512):
-		size = 40
-		for tm in range(1):
+	for size in (200, 400, 800, 1600):
+		#size = 1000
+
+		result_list = []
+		time_list = []
+
+		print "number of samples tested: ", size
+
+		for tm in range(10):
 			t0 = time.time()
 
 			finalTrainingSet = []
@@ -66,10 +72,25 @@ if __name__ == "__main__":
 
 			t1 = time.time()
 
-			print "number of files: ", size, "which loop: ", tm, "running time: ", t1 - t0
+			time_list.append(t1 - t0)
+			result_list.append(finalResult[0])
 
 			#for elem in finalResult[0]:
 			#    print elem
+		print "time average: ", numpy.mean(time_list)
+		print "time std deviation", numpy.std(time_list)
+
+		arr = numpy.array(result_list)
+		
+		print "signal average:"
+		arr_mean = numpy.mean(arr, axis=0)
+		for elem in arr_mean:
+			print elem
+
+		print "signal std deviation:"
+		arr_std = numpy.std(arr, axis=0)
+		for elem in arr_std:
+			print elem
 
 
 '''
