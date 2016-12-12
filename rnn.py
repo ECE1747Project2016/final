@@ -10,7 +10,7 @@ import sys
 import time
 
 window = 200
-filename = "./data/signal3/signal"
+filename = "./data/signal5/signal"
 
 def partialTraining(index, length, result_queue):
 	actualLength = 0
@@ -96,8 +96,8 @@ if __name__ == "__main__":
 
 				#for elem in finalResult[0]:
 				#    print elem
-			print "time average: ", numpy.mean(time_list)
-			print "time std deviation", numpy.std(time_list)
+			print "time average:", numpy.mean(time_list)
+			print "time std deviation:", numpy.std(time_list)
 
 			arr = numpy.array(result_list)
 			
@@ -110,6 +110,9 @@ if __name__ == "__main__":
 			arr_std = numpy.std(arr, axis=0)
 			for elem in arr_std:
 				print elem
+
+			avg_std = numpy.mean(arr_std, axis=0)
+			print "average signal standard deviation:", avg_std
 
 
 

@@ -10,7 +10,7 @@ import sys
 import time
 
 window = 200
-filename = "./data/signal5/signal"
+filename = "./data/signal05/signal"
 
 def partialTraining(index, length, result_queue):
 	actualLength = 0
@@ -39,61 +39,82 @@ def partialTraining(index, length, result_queue):
 
 
 if __name__ == "__main__":
-	for size in (200, 400, 800, 1600):
-		#size = 1000
+	for samples in (100, 200, 400, 800, 1600):
+		#samples = 1000
+		for num_cores in (2, 4, 8, 16, 32):
+			#num_cores = 16
+			
+			result_list = []
+			time_list = []
 
-		result_list = []
-		time_list = []
+			print "number of samples tested: ", samples, "number of cores: ", num_cores
 
-		print "number of samples tested: ", size
+			for tm in range(10):
+				t0 = time.time()
+				jobs = []
+				#tSet_length = 1024 / num_cores
+				tSet_length = int(math.ceil(samples / num_cores))
+				curr_index = 0
 
-		for tm in range(10):
-			t0 = time.time()
+				results = multiprocessing.Queue()
 
-			finalTrainingSet = []
-			#size = 10000
-			ds = SupervisedDataSet(window, window)
+				for i in range(num_cores):
+				    p = multiprocessing.Process(target=partialTraining, args=(curr_index, tSet_length, results))
+				    jobs.append(p)
+				    curr_index += tSet_length
 
-			for i in range (size):
-			    finalTrainingSet.append( numpy.loadtxt(filename + str(i+1) + ".txt") )
+				for proc in jobs:
+				    proc.start()
 
-			for i in range (size-1):
-			    ds.addSample(finalTrainingSet[i], finalTrainingSet[i+1])
-
-			net = buildNetwork(window, window-1, window, outclass=LinearLayer,bias=True, recurrent=True)
-			trainer = BackpropTrainer(net, ds)
-			trainer.trainEpochs(100)
-
-			ts = UnsupervisedDataSet(window,)
-			ts.addSample(finalTrainingSet[size-1])
-
-			finalResult = net.activateOnDataset(ts)
+				for proc in jobs:
+				    proc.join()
 
 
-			t1 = time.time()
+				finalTrainingSet = []
+				size = num_cores
+				ds = SupervisedDataSet(window, window)
 
-			time_list.append(t1 - t0)
-			result_list.append(finalResult[0])
+				while not results.empty():
+				    finalTrainingSet.append(results.get())
 
-			#for elem in finalResult[0]:
-			#    print elem
-		print "time average: ", numpy.mean(time_list)
-		print "time std deviation", numpy.std(time_list)
+				for i in range (size-1):
+				    ds.addSample(finalTrainingSet[i], finalTrainingSet[i+1])
 
-		arr = numpy.array(result_list)
-		
-		print "signal average:"
-		arr_mean = numpy.mean(arr, axis=0)
-		for elem in arr_mean:
-			print elem
+				net = buildNetwork(window, window-1, window, outclass=LinearLayer,bias=True, recurrent=True)
+				trainer = BackpropTrainer(net, ds)
+				trainer.trainEpochs(100)
 
-		print "signal std deviation:"
-		arr_std = numpy.std(arr, axis=0)
-		for elem in arr_std:
-			print elem
+				ts = UnsupervisedDataSet(window,)
+				ts.addSample(finalTrainingSet[size-1])
 
-		avg_std = numpy.mean(arr_std, axis=0)
-		print "average signal standard deviation:", avg_std
+				finalResult = net.activateOnDataset(ts)
+
+				t1 = time.time()
+
+				time_list.append(t1 - t0)
+				result_list.append(finalResult[0])
+
+				#for elem in finalResult[0]:
+				#    print elem
+			print "time average:", numpy.mean(time_list)
+			print "time std deviation:", numpy.std(time_list)
+
+			arr = numpy.array(result_list)
+			
+			print "signal average:"
+			arr_mean = numpy.mean(arr, axis=0)
+			for elem in arr_mean:
+				print elem
+
+			print "signal std deviation:"
+			arr_std = numpy.std(arr, axis=0)
+			for elem in arr_std:
+				print elem
+
+			avg_std = numpy.mean(arr_std, axis=0)
+			print "average signal standard deviation:", avg_std
+
+
 
 
 '''

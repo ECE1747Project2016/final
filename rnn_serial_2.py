@@ -10,7 +10,7 @@ import sys
 import time
 
 window = 200
-filename = "./data/signal5/signal"
+filename = "./data/signal05/signal"
 
 def partialTraining(index, length, result_queue):
 	actualLength = 0
