@@ -39,8 +39,8 @@ def partialTraining(index, length, result_queue):
 
 
 if __name__ == "__main__":
-	for size in (200, 400, 800, 1600):
-		#size = 1000
+	for size in (100, 200, 400, 800, 1600):
+		#size = 100
 
 		result_list = []
 		time_list = []
