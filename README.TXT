@@ -1,27 +1,29 @@
-PyBrain -- the Python Machine Learning Library
+ECE1747 Project - Parallelizing Pattern Recognition 
+Process Using Multiple Recurrent Neural Networks
 ===============================================
 
+USAGE
+-----
 
-INSTALLATION
-------------
-Quick answer: make sure you have SciPy installed, then
-	python setup.py install
-	
-Longer answer: (if the above was any trouble) we keep more
-detailed installation instructions (including those
-for the dependencies) up-to-date in a wiki at:
-	http://wiki.github.com/pybrain/pybrain/installation
+run any of the script below using
+	python <script_name> >> <output_file>
 
+rnn.py: parallelized training using multiprocess.Process()
 
-DOCUMENTATION
--------------
-Please read
-	docs/documentation.pdf
-or browse
-	docs/html/*	
-featuring: quickstart, tutorials, API, etc.
+rnn_pool.py: parallelized training using multiprocess.Pool()
 
-If you have matplotlib, the scripts in
-	examples/*
-may be instructive as well.
+rnn_serial.py: sequential training using a single RNN
+
+To use different input signals, change the global 'filename'
+variable at the beginning of the scripts, options include:
+	"./data/signal05/signal" - low noise
+	"./data/signal3/signal"  - medium noise
+	"./data/signal5/signal"  - high noise
+
+To test on different numbers of processes and input samples,
+change the ranges of 'samples' and 'num_cores' of the nested
+for loops at the beginning of "__main__" method
+
+The script 'signal_average.py' can be used to calcuate the
+average of different numbers of input signal samples
 
