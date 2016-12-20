@@ -10,7 +10,7 @@ import sys
 import time
 
 window = 200
-filename = "./data/signal05/signal"
+filename = "./data/signal3/signal"
 
 def partialTraining(index, length, result_queue):
 	actualLength = 0
@@ -39,10 +39,14 @@ def partialTraining(index, length, result_queue):
 
 
 if __name__ == "__main__":
-	for samples in (100, 200, 400, 800, 1600):
+	#for samples in (100, 200, 400, 800, 1600):
 		#samples = 1000
-		for num_cores in (2, 4, 8, 16, 32):
+		#for num_cores in (2, 4, 8, 16, 32):
 			#num_cores = 16
+		pairs = [[100, 8], [100, 16], [100, 32], [200, 16], [200, 32], [400, 32]]
+		for j in range(len(pairs)):
+			samples = pairs[j][0]
+			num_cores = pairs[j][1]
 			
 			result_list = []
 			time_list = []
@@ -52,13 +56,18 @@ if __name__ == "__main__":
 			for tm in range(10):
 				t0 = time.time()
 				jobs = []
-				#tSet_length = 1024 / num_cores
-				tSet_length = int(math.ceil(samples / num_cores))
 				curr_index = 0
+				proc_index = 0
+				procs_with_extra_data = samples % num_cores
 
 				results = multiprocessing.Queue()
 
 				for i in range(num_cores):
+				    tSet_length = samples / num_cores
+				    if proc_index < procs_with_extra_data:
+				        tSet_length += 1
+				    
+				    proc_index += 1
 				    p = multiprocessing.Process(target=partialTraining, args=(curr_index, tSet_length, results))
 				    jobs.append(p)
 				    curr_index += tSet_length
